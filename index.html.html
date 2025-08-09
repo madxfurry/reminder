@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>CAIE Result Panic Counter 😭</title>
+<style>
+    body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        overflow: hidden;
+        color: white;
+        background: linear-gradient(-45deg, #ff4b4b, #ff9999, #ff4b4b, #990000);
+        background-size: 400% 400%;
+        animation: gradientBG 8s ease infinite;
+    }
+
+    @keyframes gradientBG {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    h1 {
+        text-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        font-size: 2em;
+    }
+
+    #output {
+        margin-top: 20px;
+        font-size: 24px;
+        text-shadow: 0 0 15px #ffcccc;
+    }
+
+    #panicMsg {
+        margin-top: 15px;
+        font-size: 1.2em;
+        font-style: italic;
+        text-shadow: 0 0 10px #ffbbbb;
+    }
+
+    .emoji {
+        position: absolute;
+        font-size: 2rem;
+        opacity: 0.8;
+        animation: floatUp 6s linear infinite;
+    }
+
+    @keyframes floatUp {
+        0% { transform: translateY(100vh) rotate(0deg); opacity: 0; }
+        10% { opacity: 1; }
+        100% { transform: translateY(-20vh) rotate(360deg); opacity: 0; }
+    }
+</style>
+</head>
+<body>
+
+<h1>📚 CAIE Result Panic Counter 😭</h1>
+<div id="output"></div>
+<div id="panicMsg"></div>
+
+<!-- Floating Emojis -->
+<div class="emoji" style="left:10%;">😭</div>
+<div class="emoji" style="left:30%;">📚</div>
+<div class="emoji" style="left:50%;">😭</div>
+<div class="emoji" style="left:70%;">📚</div>
+<div class="emoji" style="left:90%;">😭</div>
+
+<!-- Beep Sounds -->
+<audio id="beep" src="https://assets.mixkit.co/active_storage/sfx/2001/2001-preview.mp3"></audio>
+<audio id="finalAlarm" src="https://assets.mixkit.co/active_storage/sfx/1435/1435-preview.mp3"></audio>
+
+<script>
+// Panic messages pool
+const panicMessages = [
+    "Tick tock... your fate awaits ⏳",
+    "May Cambridge have mercy on your soul 🫠",
+    "Heartbeat intensifies 💓",
+    "Somewhere, an examiner is sipping tea ☕",
+    "Results loading… but are you ready? 😬",
+    "Your Threshold is hiding under the bed 🛏",
+    "Breathe… or don’t, your choice 😵",
+    "This is fine. Everything is fine. 🔥",
+    "Your grades are in the hands of strangers 👀",
+    "Plot twist incoming 📜",
+    "If only you had studied… 📚",
+    "Stress level: Cambridge International 📈",
+    "Brace for emotional rollercoaster 🎢",
+    "Results smell suspiciously like coffee ☕",
+    "Hope you like surprises 🎁",
+    "Tick. Tock. Tick. Tock. ⏰",
+    "That one question… yeah, it’s haunting you 👻",
+    "Refresh button abuse incoming 🔄",
+    "Good luck, soldier 🪖",
+    "You’re celebrating soon 😭🎉",
+    "May the grade boundaries be in your favour 🙏"
+];
+
+// Countdown
+function updateCountdown() {
+    const resultTime = new Date("2025-08-12T10:30:00+05:00"); 
+    const now = new Date();
+    let diff = resultTime - now;
+
+    if (diff <= 0) {
+        document.getElementById("output").innerHTML = "🎉 Results are out! Refresh for tears of joy or sorrow.";
+        document.getElementById("finalAlarm").play();
+        return;
+    }
+
+    const days = diff / (1000 * 60 * 60 * 24);
+    const hours = diff / (1000 * 60 * 60);
+    const minutes = diff / (1000 * 60);
+    const seconds = diff / 1000;
+
+    document.getElementById("output").innerHTML =
+        `<strong style="font-size:2em;">${days.toFixed(2)}</strong> days<br>` +
+        `<strong style="font-size:2em;">${Math.floor(hours)}</strong> hours<br>` +
+        `<strong style="font-size:2em;">${Math.floor(minutes)}</strong> minutes<br>` +
+        `<strong style="font-size:2em;">${Math.floor(seconds)}</strong> seconds`;
+
+    document.getElementById("beep").currentTime = 0;
+    document.getElementById("beep").play();
+}
+
+// Random panic message every 3 seconds
+function updatePanicMessage() {
+    const randomMsg = panicMessages[Math.floor(Math.random() * panicMessages.length)];
+    document.getElementById("panicMsg").textContent = randomMsg;
+}
+
+// Emoji animation delays
+document.querySelectorAll('.emoji').forEach((emoji, i) => {
+    emoji.style.animationDelay = `${i * 1.5}s`;
+});
+
+setInterval(updateCountdown, 1000);
+setInterval(updatePanicMessage, 3000);
+
+updateCountdown();
+updatePanicMessage();
+</script>
+
+</body>
+</html>
